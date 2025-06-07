@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>counter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://fonts.googleapis.com/css2?family=Liter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: 'Liter', sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .counter-container {
+      background: #181818;
+      border-radius: 24px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+      padding: 32px 32px 24px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 340px;
+    }
+    .counter-title-edit {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+      background: none;
+      border: none;
+      outline: none;
+      text-align: center;
+      border-radius: 8px;
+      padding: 4px 8px;
+      transition: background 0.2s;
+      font-family: inherit;
+    }
+    .counter-title-edit:focus {
+      background: #222;
+    }
+    .last-edited {
+      font-size: 0.95rem;
+      color: #9ee4a3;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+    .digits {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+    .digit-container {
+      width: 88px;
+      height: 144px;
+      overflow: hidden;
+      border-radius: 16px;
+      background: #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .digit {
+      font-size: 6.2rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.65s cubic-bezier(.4,2,.6,1), opacity 0.2s;
+      will-change: transform;
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 0;
+      font-family: 'Liter', sans-serif;
+      justify-content: center;
+      height: 100%;
+    }
+    .btn {
+      border: none;
+      outline: none;
+      border-radius: 50%;
+      width: 72px;
+      height: 72px;
+      font-size: 2.8rem;
+      color: #fff;
+      margin: 0 24px;
+      cursor: pointer;
+      transition: transform 0.08s, box-shadow 0.2s;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      font-family: inherit;
+    }
+    .btn:active {
+      transform: scale(0.94);
+    }
+    .btn-plus {
+      background: linear-gradient(135deg, #3ddc97 60%, #00c853 100%);
+    }
+    .btn-minus {
+      background: linear-gradient(135deg, #ff5252 60%, #b71c1c 100%);
+    }
+    .btn-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .btn-reset {
+      width: 90px;
+      height: 36px;
+      border-radius: 18px;
+      font-size: 1.1rem;
+      background: #333;
+      color: #fff;
+      margin-top: 10px;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+      font-family: inherit;
+    }
+    .btn-reset:hover {
+      background: #444;
+    }
+    .popup-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 30, 30, 0.65);
+      backdrop-filter: blur(7px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s cubic-bezier(.4,2,.6,1);
+    }
+    .popup-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .popup {
+      background: #222;
+      border-radius: 20px;
+      box-shadow: 0 8px 36px rgba(0,0,0,0.45);
+      padding: 32px 22px 22px 22px;
+      min-width: 320px;
+      max-width: 90vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: popup-in 0.38s cubic-bezier(.4,2,.6,1);
+    }
+    @keyframes popup-in {
+      0% {
+        transform: translateY(40px) scale(0.95);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+    }
+    .popup-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #fff;
+      font-family: inherit;
+      text-align: center;
+    }
+    .popup-message {
+      font-size: 1.1rem;
+      color: #eee;
+      margin-bottom: 28px;
+      text-align: center;
+      font-family: inherit;
+    }
+    .popup-buttons {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+      width: 100%;
+    }
+    .popup-btn {
+      padding: 10px 28px;
+      font-size: 1.1rem;
+      font-family: inherit;
+      border-radius: 16px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background 0.2s, color 0.2s, transform 0.08s;
+      outline: none;
+    }
+    .popup-btn-cancel {
+      background: #333;
+      color: #fff;
+    }
+    .popup-btn-cancel:hover {
+      background: #444;
+    }
+    .popup-btn-ok {
+      background: linear-gradient(135deg, #3ddc97 60%, #00c853 100%);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.13);
+    }
+    .popup-btn-ok:hover {
+      background: linear-gradient(135deg, #2dc883 60%, #009e3c 100%);
+    }
+    @media (max-width: 600px) {
+      .counter-container {
+        min-width: 90vw;
+        padding: 16px 4vw 16px 4vw;
+      }
+      .digit-container {
+        width: 48px;
+        height: 80px;
+      }
+      .digit {
+        font-size: 3.2rem;
+      }
+      .btn {
+        width: 44px;
+        height: 44px;
+        font-size: 1.5rem;
+      }
+      .popup {
+        min-width: 80vw;
+        padding: 18px 10px 14px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="counter-container">
+    <input id="counter-title" class="counter-title-edit" value="Counter" maxlength="20" />
+    <div class="last-edited" id="last-edited">Last edited: --</div>
+    <div class="digits" id="digits"></div>
+    <div class="btn-row">
+      <button class="btn btn-minus" id="btn-minus">−</button>
+      <button class="btn btn-plus" id="btn-plus">＋</button>
+    </div>x`x`
+    <button class="btn-reset" id="btn-reset">Reset</button>
+  </div>
+ 
+  <div class="popup-backdrop" id="popup-backdrop">
+    <div class="popup" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+      <div class="popup-title" id="popup-title">Reset Counter?</div>
+      <div class="popup-message">are you reset？</div>
+      <div class="popup-buttons">
+        <button class="popup-btn popup-btn-cancel" id="popup-cancel">Cancel</button>
+        <button class="popup-btn popup-btn-ok" id="popup-ok">Okay</button>
+      </div>
+    </div>
+  </div>
+  <script>
+  
+    const DIGIT_HEIGHT = 144; // px
+ 
+    let count = 0;
+    let lastEdited = null;
+    const digitLength = 4;
+    const digitsEl = document.getElementById('digits');
+    const lastEditedEl = document.getElementById('last-edited');
+    const titleInput = document.getElementById('counter-title');
+    const MAX = 9999;
+    const MIN = 0;
+
+    function bounceAnimation(target, direction, callback) {
+    
+      const bounces = [
+        null,   
+        1.2,
+        1.7,
+        2,
+        1.5,
+        0.7, 
+        -0.1,
+        -0.3,
+        -0.6,
+        -0.3,
+        0.1,  
+        0.2,
+        0.1,
+        0             
+      ];
+  
+      const bouncesDir = bounces.map(v => (v === null ? 0 : v * direction));
+      let idx = 0;
+      let prev = 0;
+      const duration = 600; // ms
+      const bounceDuration = duration / (bounces.length - 1);
+
+      function step() {
+        if (idx >= bounces.length - 1) {
+          if (callback) callback();
+          return;
+        }
+        const from = bouncesDir[idx];
+        const to = bouncesDir[idx + 1];
+        const startTime = performance.now();
+
+        function animate(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / bounceDuration, 1);
+       
+          const current = from + (to - from) * progress;
+          target.style.transform = `translateY(${current}px)`;
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            idx++;
+            step();
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+      step();
+    }
+
+   
+    function animateDigit(digitEl, oldDigit, newDigit, direction) {
+    
+      const animOld = document.createElement('div');
+      animOld.className = 'digit';
+      animOld.textContent = oldDigit;
+      animOld.style.transform = 'translateY(0)';
+      animOld.style.opacity = '1';
+
+      const animNew = document.createElement('div');
+      animNew.className = 'digit';
+      animNew.textContent = newDigit;
+      animNew.style.transform = `translateY(${DIGIT_HEIGHT * direction}px)`;
+      animNew.style.opacity = '0';
+
+      digitEl.innerHTML = '';
+      digitEl.appendChild(animOld);
+      digitEl.appendChild(animNew);
+
+      void animNew.offsetWidth;
+
+    
+      animOld.style.transition = 'transform 2s cubic-bezier(.4,1.5,.5,1), opacity 0.2s';
+      animNew.style.transition = 'transform 0.6s cubic-bezier(.4,1.5,.5,1), opacity 0.4s';
+      animOld.style.transform = `translateY(${-DIGIT_HEIGHT * direction}px)`;
+      animOld.style.opacity = '0';
+      animNew.style.transform = 'translateY(0)';
+      animNew.style.opacity = '1';
+
+      setTimeout(() => {
+     
+        animNew.style.transition = 'none'; 
+        bounceAnimation(animNew, direction, () => {
+          
+          animNew.style.transform = 'translateY(0)';
+          animNew.style.position = 'static';
+        });
+        digitEl.innerHTML = '';
+        digitEl.appendChild(animNew);
+      }, 600); 
+    }
+
+    function getDigits(num) {
+      return num.toString().padStart(digitLength, '0').split('').map(Number);
+    }
+
+ 
+    function getDirections(oldNum, newNum, options = {}) {
+      
+      const oldDigits = getDigits(oldNum);
+      const newDigits = getDigits(newNum);
+      const directions = [];
+      for (let i = 0; i < digitLength; i++) {
+        if (options.forceDown) {
+          directions.push(-1);
+          continue;
+        }
+        if (oldDigits[i] === newDigits[i]) {
+          directions.push(0);
+          continue;
+        }
+      
+        if (oldDigits[i] === 9 && newDigits[i] === 0) {
+          directions.push(1);
+        }
+       
+        else if (oldDigits[i] === 0 && newDigits[i] === 9) {
+          directions.push(-1);
+        }
+       
+        else if (newDigits[i] > oldDigits[i]) {
+          directions.push(1); // up
+        } else {
+          directions.push(-1); // down
+        }
+      }
+      return directions;
+    }
+
+  
+    let prevDigits = getDigits(count);
+    function renderDigits(newCount, oldCount = null, options = {}) {
+      const digits = getDigits(newCount);
+      const oldDigits = oldCount ? getDigits(oldCount) : prevDigits;
+      const directions = oldCount !== null ? getDirections(oldCount, newCount, options) : [0,0,0,0];
+      digitsEl.innerHTML = '';
+      for (let i = 0; i < digitLength; i++) {
+        const digitBox = document.createElement('div');
+        digitBox.className = 'digit-container';
+        const digitEl = document.createElement('div');
+        digitEl.className = 'digit';
+        digitEl.textContent = digits[i];
+        digitBox.appendChild(digitEl);
+        digitsEl.appendChild(digitBox);
+
+       
+        if (oldDigits[i] !== digits[i] && oldCount !== null) {
+          animateDigit(digitBox, oldDigits[i], digits[i], directions[i]);
+        }
+      }
+      prevDigits = digits;
+    }
+
+ 
+    function updateLastEdited() {
+      if (!lastEdited) {
+        lastEditedEl.textContent = 'Last edited: --';
+        return;
+      }
+      const d = new Date(lastEdited);
+      lastEditedEl.textContent = `Last edited: ${d.toLocaleString('ja-JP', { hour12: false })}`;
+    }
+
+ 
+    function setCount(newCount, options = {}) {
+      const oldCount = count;
+ 
+      if (newCount > MAX) {
+        count = MIN;
+      } else if (newCount < MIN) {
+        count = MAX;
+      } else {
+        count = newCount;
+      }
+      renderDigits(count, oldCount, options);
+      lastEdited = Date.now();
+      updateLastEdited();
+    }
+
+    document.getElementById('btn-plus').onclick = () => setCount(count + 1);
+    document.getElementById('btn-minus').onclick = () => setCount(count - 1);
+
+    const popupBackdrop = document.getElementById('popup-backdrop');
+    const popupCancel = document.getElementById('popup-cancel');
+    const popupOk = document.getElementById('popup-ok');
+    let popupActive = false;
+
+    document.getElementById('btn-reset').onclick = (e) => {
+      popupBackdrop.classList.add('active');
+      setTimeout(() => popupCancel.focus(), 100);
+      popupActive = true;
+      document.body.style.overflow = 'hidden';
+    };
+
+ 
+    popupCancel.onclick = () => {
+      popupBackdrop.classList.remove('active');
+      popupActive = false;
+      document.body.style.overflow = '';
+    };
+ 
+    popupOk.onclick = () => {
+      setCount(0, { forceDown: true }); 
+      popupBackdrop.classList.remove('active');
+      popupActive = false;
+      document.body.style.overflow = '';
+    };
+  
+    popupBackdrop.onclick = (e) => {
+      if (e.target === popupBackdrop) {
+        popupBackdrop.classList.remove('active');
+        popupActive = false;
+        document.body.style.overflow = '';
+      }
+    };
+   
+    window.addEventListener('keydown', (e) => {
+      if (popupActive && e.key === 'Escape') {
+        popupBackdrop.classList.remove('active');
+        popupActive = false;
+        document.body.style.overflow = '';
+      }
+    });
+
+    titleInput.addEventListener('input', () => {
+      lastEdited = Date.now();
+      updateLastEdited();
+    });
+
+    // 初期描画
+    renderDigits(count);
+    updateLastEdited();
+  </script>
+</body>
+</html>
