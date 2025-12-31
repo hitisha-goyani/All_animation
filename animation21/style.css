@@ -1,0 +1,82 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* BACKGROUND */
+body {
+  height: 100vh;
+  background: radial-gradient(circle at top, #111, #000);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* WRAPPER */
+.orbit-wrapper {
+  text-align: center;
+  color: #fff;
+}
+
+/* ORBIT */
+.orbit {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: auto;
+  animation: rotate 6s linear infinite;
+}
+
+/* DOTS */
+.orbit span {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00f2ff, #7cffcb);
+  box-shadow: 0 0 15px #00f2ff, 0 0 30px #00f2ff;
+}
+
+.orbit span:nth-child(1) {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.orbit span:nth-child(2) {
+  bottom: 20px;
+  left: 10px;
+}
+
+.orbit span:nth-child(3) {
+  bottom: 20px;
+  right: 10px;
+}
+
+/* ROTATION */
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* TEXT REVEAL */
+.text {
+  margin-top: 35px;
+  font-size: 26px;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, #00f2ff, #7cffcb, #00f2ff);
+  background-size: 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glowText 3s linear infinite;
+}
+
+/* TEXT GLOW */
+@keyframes glowText {
+  0% { background-position: 0%; }
+  100% { background-position: 200%; }
+}
