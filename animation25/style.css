@@ -1,0 +1,108 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4f7ff;
+}
+
+/* Cartoon wrapper */
+.cartoon {
+  animation: bounce 3s ease-in-out infinite;
+}
+
+/* Head */
+.head {
+  width: 140px;
+  height: 140px;
+  background: #ffd39f;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* Eyes */
+.eye {
+  width: 18px;
+  height: 18px;
+  background: #000;
+  border-radius: 50%;
+  position: absolute;
+  top: 45px;
+  animation: blink 4s infinite;
+}
+
+.eye.left {
+  left: 40px;
+}
+
+.eye.right {
+  right: 40px;
+}
+
+/* Mouth */
+.mouth {
+  width: 40px;
+  height: 20px;
+  border-bottom: 4px solid #000;
+  border-radius: 0 0 40px 40px;
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Body */
+.body {
+  width: 120px;
+  height: 110px;
+  background: #6c63ff;
+  border-radius: 20px;
+  margin: -10px auto 0;
+  position: relative;
+}
+
+/* Hands */
+.hand {
+  width: 20px;
+  height: 70px;
+  background: #ffd39f;
+  position: absolute;
+  top: 20px;
+  border-radius: 20px;
+}
+
+.hand.left {
+  left: -18px;
+}
+
+.hand.right {
+  right: -18px;
+  transform-origin: top;
+  animation: wave 2s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes blink {
+  0%, 95%, 100% {
+    transform: scaleY(1);
+  }
+  97% {
+    transform: scaleY(0.1);
+  }
+}
+
+@keyframes wave {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(-25deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
