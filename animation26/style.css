@@ -1,0 +1,184 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(#87ceeb, #bdf2ff);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.scene {
+  position: relative;
+  width: 700px;
+  height: 400px;
+  background: #a4e3a1;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* ☀️ Sun */
+.sun {
+  width: 90px;
+  height: 90px;
+  background: #ffd93b;
+  border-radius: 50%;
+  position: absolute;
+  top: 30px;
+  left: 50px;
+  animation: bounce 2s infinite alternate;
+}
+
+/* ☁️ Clouds */
+.cloud {
+  width: 120px;
+  height: 50px;
+  background: white;
+  border-radius: 50px;
+  position: absolute;
+  top: 70px;
+}
+
+.cloud::before,
+.cloud::after {
+  content: "";
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+}
+
+.cloud::before {
+  width: 50px;
+  height: 50px;
+  left: 15px;
+  top: -20px;
+}
+
+.cloud::after {
+  width: 70px;
+  height: 70px;
+  right: 15px;
+  top: -30px;
+}
+
+.cloud1 {
+  left: -150px;
+  animation: cloudMove 12s linear infinite;
+}
+
+.cloud2 {
+  top: 120px;
+  left: -300px;
+  animation: cloudMove 18s linear infinite;
+}
+
+/* 🦋 Butterfly */
+.butterfly {
+  position: absolute;
+  top: 200px;
+  left: 0;
+  display: flex;
+  animation: fly 6s infinite ease-in-out;
+}
+
+.butterfly span {
+  width: 20px;
+  height: 30px;
+  background: pink;
+  border-radius: 50%;
+  margin: 2px;
+  animation: flap 0.5s infinite alternate;
+}
+
+/* 👦 Kid */
+.kid {
+  position: absolute;
+  bottom: 40px;
+  left: 300px;
+}
+
+.hair {
+  width: 70px;
+  height: 30px;
+  background: #333;
+  border-radius: 20px;
+}
+
+.face {
+  width: 70px;
+  height: 70px;
+  background: #ffccaa;
+  border-radius: 50%;
+  position: relative;
+}
+
+.eye {
+  width: 8px;
+  height: 8px;
+  background: black;
+  border-radius: 50%;
+  position: absolute;
+  top: 25px;
+}
+
+.eye.left { left: 20px; }
+.eye.right { right: 20px; }
+
+.smile {
+  width: 25px;
+  height: 12px;
+  border-bottom: 4px solid red;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 18px;
+  left: 22px;
+}
+
+.body {
+  width: 70px;
+  height: 80px;
+  background: #ff6f61;
+  border-radius: 15px;
+}
+
+.arm {
+  width: 15px;
+  height: 60px;
+  background: #ffccaa;
+  position: absolute;
+  right: -10px;
+  top: 90px;
+  transform-origin: top;
+  animation: wave 1s infinite alternate;
+}
+
+/* ✨ Animations */
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(15px); }
+}
+
+@keyframes cloudMove {
+  from { left: -200px; }
+  to { left: 800px; }
+}
+
+@keyframes fly {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(300px, -80px); }
+  100% { transform: translate(700px, 0); }
+}
+
+@keyframes flap {
+  from { transform: scaleY(1); }
+  to { transform: scaleY(0.7); }
+}
+
+@keyframes wave {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(30deg); }
+}
