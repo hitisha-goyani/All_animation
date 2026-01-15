@@ -1,0 +1,130 @@
+/* Common Properties */
+.cube-1,
+.cube-2,
+.cube-3,
+.isometric-cube-top,
+.isometric-cube-right,
+.isometric-cube-left {
+  position: absolute;
+  transform-origin: 0 0;
+}
+
+/* Isometric Cube Parts */
+.isometric-cube-top {
+  width: 140px;
+  height: 140px;
+  background: #4fa0f8;
+  transform: rotate(210deg) skewX(-30deg) scaleY(0.864);
+}
+
+.isometric-cube-right {
+  width: 140px;
+  height: 47px;
+  background: #f99f3e;
+  transform: rotate(-30deg) skewX(-30deg) translate(0, -0.5px) scaleY(0.864);
+}
+
+.isometric-cube-left {
+  width: 47px;
+  height: 140px;
+  background: #4ff8de;
+  transform: rotate(90deg) skewX(-30deg) scaleY(0.864) translate(-0.5px, 0);
+}
+
+/* Cubes */
+.cube-1 {
+  top: 277px;
+  top: 310px;
+  left: 244px;
+  animation: cube-1 4s ease-in-out infinite;
+}
+
+.cube-2 {
+  top: 231px;
+  top: 245px;
+  left: 244px;
+  animation: cube-2 4s ease-in-out infinite;
+}
+
+.cube-3 {
+  top: 185px;
+  left: 244px;
+  animation: cube-3 4s ease-in-out infinite;
+}
+
+/* Cube Animation */
+@keyframes cube-1 {
+  from {
+    top: 277px;
+  }
+  40% {
+    top: 414px;
+  }
+  84% {
+    top: 414px;
+  }
+  to {
+    top: 277px;
+  }
+}
+
+@keyframes cube-2 {
+  from {
+    top: 231px;
+  }
+  40% {
+    top: 305px;
+  }
+  60% {
+    top: 368px;
+  }
+  75% {
+    top: 368px;
+  }
+  to {
+    top: 231px;
+  }
+}
+
+@keyframes cube-3 {
+  from {
+    top: 185px;
+  }
+  30% {
+    top: 185px;
+  }
+  65% {
+    top: 322px;
+  }
+  68% {
+    top: 322px;
+  }
+  to {
+    top: 185px;
+  }
+}
+
+/* Body and Container Settings */
+/* Center shapes */
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Set background and border color */
+.container {
+  width: 500px;
+  height: 500px;
+  border: 5px solid lightgray;
+  background: #121212;
+  position: relative;
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
