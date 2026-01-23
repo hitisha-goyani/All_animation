@@ -1,0 +1,107 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  height: 100vh;
+  background: radial-gradient(circle at top, #0f2027, #000);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Glowing Floating Orb */
+.orb {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, #00f2fe, #4facfe, #a855f7);
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: float 8s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translate(-150px, -100px); }
+  50% { transform: translate(150px, 100px); }
+  100% { transform: translate(-150px, -100px); }
+}
+
+/* Glass Morph Card */
+.card {
+  position: relative;
+  width: 320px;
+  height: 220px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  border-radius: 30px;
+  padding: 30px;
+  color: #fff;
+  text-align: center;
+  animation: morph 6s ease-in-out infinite;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Gradient Border */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 30px;
+  padding: 2px;
+  background: linear-gradient(270deg, #00f2fe, #a855f7, #00f2fe);
+  background-size: 400%;
+  animation: borderMove 6s linear infinite;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+}
+
+@keyframes borderMove {
+  0% { background-position: 0%; }
+  100% { background-position: 400%; }
+}
+
+/* Morph animation */
+@keyframes morph {
+  0%,100% {
+    border-radius: 30px;
+    transform: translateY(0);
+  }
+  50% {
+    border-radius: 60px 20px 60px 20px;
+    transform: translateY(-15px);
+  }
+}
+
+.card h1 {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.card p {
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.card button {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #00f2fe, #a855f7);
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.card button:hover {
+  transform: scale(1.1);
+}
