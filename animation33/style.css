@@ -1,0 +1,76 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  body {
+    height: 100vh;
+    background: #0f0f1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card {
+    width: 280px;
+    height: 180px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    text-align: center;
+    color: #fff;
+    padding: 40px 20px;
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+    cursor: pointer;
+  }
+  
+  /* Neon Glow */
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 22px;
+    background: linear-gradient(45deg, #00f7ff, #ff00ea, #00ff88);
+    filter: blur(20px);
+    z-index: -1;
+    animation: neon 4s linear infinite;
+  }
+  
+  .card h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+  
+  .card p {
+    font-size: 14px;
+    opacity: 0.85;
+  }
+  
+  /* Floating animation */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+  
+  /* Glow movement */
+  @keyframes neon {
+    0% {
+      filter: blur(18px) hue-rotate(0deg);
+    }
+    100% {
+      filter: blur(18px) hue-rotate(360deg);
+    }
+  }
+  
+  /* Hover effect */
+  .card:hover {
+    transform: scale(1.08);
+  }
+  
